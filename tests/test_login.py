@@ -1,26 +1,24 @@
-from playwright.sync_api import Page, expect
-from pages.login_page import LoginPage
-from config import VALID_USER, VALID_PASSWORD
+import os
+import pytest
+from pages.login_page import PayPalLoginPage
+from config import PAYPAL_SANDBOX_EMAIL, PAYPAL_SANDBOX_PASSWORD
 
+def test_paypal_login_ok_reaches_otp(page):
+    """Test de login en PayPal sandbox que verifica que se llega a la pantalla de OTP"""
+    
+    # Verificar que las credenciales estén configuradas
+    if not PAYPAL_SANDBOX_EMAIL or not PAYPAL_SANDBOX_PASSWORD:
+        pytest.skip("PAYPAL_SANDBOX_EMAIL y PAYPAL_SANDBOX_PASSWORD deben estar configuradas como variables de entorno")
+    
+    paypal = PayPalLoginPage(page)
 
-def test_login_success(login_page: LoginPage, page: Page):
-    """
-    Escenario: Login exitoso.
-    GIVEN que el usuario está en la pantalla de login
-    WHEN ingresa credenciales válidas
-    THEN debería ver un texto que solo aparece después de loguearse.
-    """
-    # WHEN
-    login_page.login(VALID_USER, VALID_PASSWORD)
+    # Navegar directamente a la página de login
+    paypal.goto_login()
 
-    # THEN: validamos que el usuario llegó a la página de productos
-    expect(page.get_by_text("Products")).to_be_visible()
-  
+    paypal.login(
+        email=PAYPAL_SANDBOX_EMAIL,
+        password=PAYPAL_SANDBOX_PASSWORD
+    )
 
-
-def test_login_fail(login_page: LoginPage):
-    """
-    Login fallido para que veas cómo manejar errores.
-    """
-    login_page.login("wrong_user", "wrong_pass")
-    login_page.assert_login_error()
+    # Verificar que el login fue exitoso (puede llegar a OTP o directamente al dashboard)
+    paypal.assert_reached_otp()
