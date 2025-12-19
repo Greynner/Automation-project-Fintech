@@ -22,3 +22,17 @@ def test_paypal_login_ok_reaches_otp(page):
 
     # Verificar que el login fue exitoso (puede llegar a OTP o directamente al dashboard)
     paypal.assert_reached_otp()
+
+
+def test_paypal_login_failed(page):
+    """Test de login en PayPal sandbox que verifica que el login falla"""
+    
+    # Verificar que las credenciales estén configuradas
+    if not PAYPAL_SANDBOX_EMAIL or not PAYPAL_SANDBOX_PASSWORD:
+        pytest.skip("PAYPAL_SANDBOX_EMAIL y PAYPAL_SANDBOX_PASSWORD deben estar configuradas como variables de entorno")
+    
+    paypal = PayPalLoginPage(page)
+    
+    paypal.goto_login()
+    
+    paypal.login(email="invalid@example.com", password="invalidpassword")
