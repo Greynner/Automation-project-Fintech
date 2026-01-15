@@ -40,7 +40,9 @@ class SendMoneyPage:
 
     def recipient_option_for(self, email: str):
         # Screenshot: option name "Send to: sb-xxxx@personal.example.com"
-        return self.page.get_by_role("option", name=f"Send to: {email}")
+        # Find option that contains the email (more flexible than exact match)
+        # This handles cases where the format might be slightly different
+        return self.page.get_by_role("option").filter(has_text=email)
 
     # ---------------------------
     # AMOUNT / CURRENCY / NOTE
@@ -118,10 +120,16 @@ class SendMoneyPage:
         self.recipient_input.click()
         self.recipient_input.fill(recipient_email)
 
+        # Wait for suggestions to appear first (dropdown needs time to load)
+        # Wait for at least one option to be visible, indicating the dropdown has loaded
+        expect(self.recipient_suggestions.first).to_be_visible(timeout=10000)
+        
         # Wait and click the specific option if it appears
+        # Use a more flexible search: find option containing the email
+        # This handles different formats PayPal might use (e.g., "Send to: email" or just "email")
         option = self.recipient_option_for(recipient_email)
-        expect(option).to_be_visible()
-        option.click()
+        expect(option.first).to_be_visible(timeout=10000)
+        option.first.click()
 
     def enter_amount(self, amount: str):
         expect(self.amount_input).to_be_visible()
