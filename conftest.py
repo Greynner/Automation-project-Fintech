@@ -3,6 +3,7 @@ from playwright.sync_api import Page
 from config import PAYPAL_BASE_URL
 from pages.login_page import PayPalLoginPage
 from pages.send_money_page import SendMoneyPage
+from pages.currency_converter_page import CurrencyConverterPage
 
 
 @pytest.fixture
@@ -23,3 +24,13 @@ def send_money_page(page: Page) -> SendMoneyPage:
     sm = SendMoneyPage(page)
     sm.goto()
     return sm
+
+
+@pytest.fixture
+def currency_converter_page(page: Page) -> CurrencyConverterPage:
+    """
+    Deja la página en la pantalla del conversor de moneda de Littio y devuelve el Page Object listo.
+    """
+    cc = CurrencyConverterPage(page)
+    cc.goto()
+    return cc
