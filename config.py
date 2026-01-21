@@ -5,8 +5,6 @@ from dotenv import load_dotenv
 # Cargar variables de entorno desde .env
 load_dotenv()
 
-# config.py
-
 # Base URL
 PAYPAL_BASE_URL = "https://www.sandbox.paypal.com"
 PAYPAL_LOGIN_URL = "https://www.sandbox.paypal.com/signin"
@@ -26,6 +24,3 @@ PAYPAL_OTP_TITLE_TEXT = "Confirm your email"
 # PayPal Sandbox Credentials
 PAYPAL_SANDBOX_EMAIL = os.getenv("PAYPAL_SANDBOX_EMAIL", "sb-automationtest@business.example.com")
 PAYPAL_SANDBOX_PASSWORD = os.getenv("PAYPAL_SANDBOX_PASSWORD", "4J^&shyx")
-
-# Littio QA Challenge App
-LITTIO_BASE_URL = os.getenv("LITTIO_BASE_URL", "http://localhost:5173")
