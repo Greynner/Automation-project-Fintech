@@ -5,6 +5,9 @@ from pages.login_page import PayPalLoginPage
 from config import PAYPAL_SANDBOX_EMAIL, PAYPAL_SANDBOX_PASSWORD
 
 def test_paypal_send_money_e2e(page):
+    if not PAYPAL_SANDBOX_EMAIL or not PAYPAL_SANDBOX_PASSWORD:
+        pytest.skip("PAYPAL_SANDBOX_EMAIL and PAYPAL_SANDBOX_PASSWORD must be configured")
+
     # Primero hacer login
     login_page = PayPalLoginPage(page)
     login_page.goto_login()

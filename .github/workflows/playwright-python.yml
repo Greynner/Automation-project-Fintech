@@ -7,9 +7,21 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+permissions:
+  contents: read
+
+concurrency:
+  group: playwright-tests-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   tests:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      PAYPAL_SANDBOX_EMAIL: ${{ secrets.PAYPAL_SANDBOX_EMAIL }}
+      PAYPAL_SANDBOX_PASSWORD: ${{ secrets.PAYPAL_SANDBOX_PASSWORD }}
+      PAYPAL_RECIPIENT_EMAIL: ${{ secrets.PAYPAL_RECIPIENT_EMAIL }}
 
     steps:
       - name: Checkout repo

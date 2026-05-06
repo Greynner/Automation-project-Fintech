@@ -22,5 +22,6 @@ PAYPAL_SUBMIT_SELECTOR = "#btnLogin"
 PAYPAL_OTP_TITLE_TEXT = "Confirm your email"
 
 # PayPal Sandbox Credentials
-PAYPAL_SANDBOX_EMAIL = os.getenv("PAYPAL_SANDBOX_EMAIL", "sb-automationtest@business.example.com")
-PAYPAL_SANDBOX_PASSWORD = os.getenv("PAYPAL_SANDBOX_PASSWORD", "4J^&shyx")
+# Keep these values in .env locally or GitHub Actions secrets in CI.
+PAYPAL_SANDBOX_EMAIL = os.getenv("PAYPAL_SANDBOX_EMAIL")
+PAYPAL_SANDBOX_PASSWORD = os.getenv("PAYPAL_SANDBOX_PASSWORD")
